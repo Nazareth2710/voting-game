@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-// Define the default emojis to use for reactions
+// Define the default emojis to use for reactions (for reference)
 const defaultEmojis = ["😂", "👍", "❤️"];
 
 const JokeCard = () => {
@@ -8,27 +8,18 @@ const JokeCard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Function to augment a fetched joke with default emoji votes
-  const augmentJoke = (jokeData) => {
-    return {
-      ...jokeData,
-      availableVotes: defaultEmojis,
-      votes: defaultEmojis.map(emoji => ({ label: emoji, value: 0 }))
-    };
-  };
-
-  // Fetch a joke from the Teehee Joke API and augment it
+  // Fetch a joke from your backend
   const fetchJoke = async () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('https://teehee.dev/api/joke');
+      // Change the URL to your backend endpoint
+      const res = await fetch('http://localhost:5000/api/joke');
       if (!res.ok) {
         throw new Error('Failed to fetch joke');
       }
       const data = await res.json();
-      const augmentedJoke = augmentJoke(data);
-      setJoke(augmentedJoke);
+      setJoke(data);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -37,14 +28,23 @@ const JokeCard = () => {
   };
 
   // Handle a vote click for a specific emoji
-  const handleVote = (emoji) => {
-    const updatedVotes = joke.votes.map(vote => {
-      if (vote.label === emoji) {
-        return { ...vote, value: vote.value + 1 };
+  const handleVote = async (emoji) => {
+    try {
+      // Send a POST request to update the vote
+      const res = await fetch(`http://localhost:5000/api/joke/${joke.jokeId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ emoji }),
+      });
+      if (!res.ok) {
+        throw new Error('Failed to update vote');
       }
-      return vote;
-    });
-    setJoke({ ...joke, votes: updatedVotes });
+      const updatedJoke = await res.json();
+      setJoke(updatedJoke);
+    } catch (err) {
+      console.error(err);
+      // Optionally, you can set an error state here if desired
+    }
   };
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const JokeCard = () => {
       <p className="mb-6 text-lg">{joke.answer}</p>
       <div className="flex justify-center space-x-4 mb-4">
         {joke.availableVotes.map((emoji) => {
-          // Get the current vote count for this emoji
+          // Get the current vote count for this emoji from the joke data returned by the backend
           const voteObj = joke.votes.find(v => v.label === emoji);
           const voteCount = voteObj ? voteObj.value : 0;
           return (
