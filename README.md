@@ -50,7 +50,7 @@ Start the backend server:
 node server.js
 ```
 
-### 3. Set Up the Backend
+### 3. Set Up the Frontend
 
 Navigate to the frontend folder, install dependencies and start the app:
 ```bash
