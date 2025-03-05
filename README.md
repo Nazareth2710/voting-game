@@ -40,7 +40,7 @@ cd backend
 npm install
 ```
 
-Create a .env file in the backend folder with the following content, but **do not forget make necessary changes** (For more details of connecting to Atlas cluster with app, check out [this guide](https://www.mongodb.com/docs/atlas/tutorial/connect-to-your-cluster/#connect-to-your-atlas-cluster)):
+Create a .env file in the backend folder with the following content, but **do not forget make necessary changes** (For more details of connecting Atlas cluster with app, check out [this guide](https://www.mongodb.com/docs/atlas/tutorial/connect-to-your-cluster/#connect-to-your-atlas-cluster)):
 ```env
 MONGO_URI="mongodb+srv://<username>:<password>@cluster0.2zkoa1z.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 ```
