@@ -42,7 +42,7 @@ npm install
 
 Create a .env file in the backend folder with the following content (For more details of connecting to your Atlas cluster and deploying your app, check out [this guide](https://www.mongodb.com/docs/atlas/tutorial/connect-to-your-cluster/#connect-to-your-atlas-cluster)):
 ```env
-MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/jokesDB?retryWrites=true&w=majority
+MONGO_URI="mongodb+srv://<username>:<password>@cluster0.2zkoa1z.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 ```
 
 Start the backend server:
